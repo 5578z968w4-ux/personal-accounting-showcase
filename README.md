@@ -1,63 +1,51 @@
-# Personal Accounting
+# 個人記帳與薪資管理系統
 
-A mobile-friendly personal accounting application built with PHP 8.2, MariaDB 11, Apache, and Docker Compose. It covers expenses, income, salary estimates, overtime, leave, analytics, PWA quick entry, and optional Gemini-assisted parsing.
+[English](README.en.md)
 
-> Public showcase repository: this repository contains only its clean public-only history and no private source history, real environment file, database backup, import file, or runtime log. See `PUBLIC_RELEASE_SCOPE.md` for the completed publication status and operating boundaries.
+這是一套以 PHP 8.2、MariaDB 11、Apache 與 Docker Compose 建置的行動優先個人記帳系統，整合支出、收入、薪資試算、加班、請假、統計分析、PWA 快速輸入，以及可選用的 Gemini 輔助解析流程。
 
-## Features
+> 這是經過隱私審查的公開展示版本。Repository 僅包含重新建立的公開 Git 歷史，不包含私有原始歷史、真實環境檔、資料庫備份、匯入檔、執行紀錄或正式憑證。完整發布狀態與操作邊界請參閱 `PUBLIC_RELEASE_SCOPE.md`。
 
-- Expense and income management with configurable payment methods and accounts
-- Monthly salary, overtime, leave, and work-day settings
-- Accounting-month calculation based on configurable settlement cycles
-- Dashboard and filtered analytics
-- Mobile-first administration pages and a lightweight PWA entry surface
-- Optional Gemini parsing with server-side validation and trace records
-- SQLite-focused tests plus Docker-based MariaDB runtime support
+## 這個展示可以真的操作嗎？
 
-## Security boundary
+可以。這個 repository 不只是展示圖片，也包含可執行的完整應用程式、Docker 環境、資料庫 migration、合成 Demo 資料與自動化測試。
 
-- The default Compose port binds to `127.0.0.1` only.
-- MariaDB has no host port mapping and is reachable only from the Compose network.
-- Apache and PHP runtime logs use project-scoped Docker named volumes instead of being written into the source directory.
-- Secrets belong in the root `.env`; `.env` is ignored by Git and Apache serves only `app/public`.
-- `quick_entry.php` and `quick_entry_api.php` were designed for a trusted private network and are not authenticated public webhooks. Do not expose this application directly to the internet without adding an authorization layer, HTTPS, rate limiting, CSRF review, and abuse controls.
-- `db-test.php` writes a diagnostic row. Maintenance and production-import scripts can modify data and must not be used against a real database without a backup and explicit review.
-- Demo screenshots, fixtures, and deployments must use synthetic data only.
+GitHub 首頁本身只會呈現 README、原始碼與截圖，不會直接執行 PHP 或 MariaDB。將 repository clone 到本機並依下方指令啟動後，即可登入真正可操作的隔離 Demo。
 
-## Local setup
+## 功能亮點
 
-1. Copy the example environment file and replace every password placeholder.
+| 功能 | 說明 |
+| --- | --- |
+| 儀表板 | 顯示月份收支、薪資試算、結餘與近期紀錄 |
+| 支出與收入 | 支援新增、編輯、軟刪除、篩選與分類分析 |
+| 付款方式與帳戶 | 由後台設定，不在程式中寫死 |
+| 帳單月份 | 依付款方式的結算週期自動計算 |
+| 薪資管理 | 管理每月工作天、薪資參數與薪資明細 |
+| 加班與請假 | 管理同日唯一紀錄、時數、天數與假別 |
+| AI 輔助輸入 | 可選用 Gemini 解析，具伺服器端驗證與 Trace 紀錄 |
+| 行動版與 PWA | 提供手機友善後台與快速輸入介面 |
+| 品質驗證 | 包含 PHP lint、focused tests、公開邊界與完整 Git 歷史掃描 |
 
-   ```bash
-   cp .env.example .env
-   chmod 600 .env
-   ```
+## 合成 Demo 截圖
 
-2. Build and start the local stack.
+桌面版儀表板：
 
-   ```bash
-   docker compose up -d --build
-   ```
+![合成資料桌面版儀表板](docs/screenshots/dashboard-demo.png)
 
-3. Run the idempotent schema migration.
+手機版儀表板：
 
-   ```bash
-   docker compose exec app php /var/www/html/scripts/migrate.php
-   ```
+![合成資料手機版儀表板](docs/screenshots/dashboard-mobile-demo.png)
 
-4. Open `http://127.0.0.1:8080/` unless `APP_PORT` was changed.
+截圖中的付款方式、帳戶、記帳對象、交易與工作紀錄全部都是固定合成資料，不代表任何真實人物或真實帳務模式。
 
-Never run `docker compose down -v` unless permanent deletion of the local database volume is intended.
+## 啟動可操作的本機 Demo
 
-## Interactive local demo
-
-The repository includes a real, isolated demo mode with synthetic accounting data. It does not use the normal database name, does not call Gemini, and disables the unauthenticated Quick Entry, Shortcut API, and database diagnostic endpoints.
-
-All payment methods, accounts, entry-owner labels, transactions, and work records in Demo mode are synthetic. The reset command restores the fixed anonymous reference data as well as the transaction fixtures.
-
-Start the demo with its dedicated Compose project name and public example environment:
+Demo 使用獨立 Compose project、獨立資料庫名稱與公開範例環境設定，不會使用一般環境的資料庫。
 
 ```bash
+git clone https://github.com/5578z968w4-ux/personal-accounting-showcase.git
+cd personal-accounting-showcase
+
 docker compose \
   -p personal_accounting_demo_public \
   --env-file .env.demo.example \
@@ -74,59 +62,88 @@ docker compose \
   exec app php /var/www/html/scripts/demo_reset.php
 ```
 
-Open `http://127.0.0.1:18085/` and use:
+開啟 `http://127.0.0.1:18085/`，使用以下公開 Demo 帳密：
 
-- Username: `demo`
-- Password: `demo-local-only`
+- 帳號：`demo`
+- 密碼：`demo-local-only`
 
-The reset script deletes and recreates only synthetic rows inside `personal_accounting_demo`. It refuses to run unless `APP_ENV=demo`, `DEMO_MODE=1`, and both configured and connected database identities equal `personal_accounting_demo`.
+`.env.demo.example` 內的帳密只供隔離本機 Demo 使用，不可重複用於任何對外服務。
 
-The credentials in `.env.demo.example` are intentionally public local-demo values. Never reuse them for an internet-facing deployment.
+## Demo 安全邊界
 
-## Synthetic demo screenshots
+- Demo 只使用 `personal_accounting_demo` 與固定合成資料。
+- `demo_reset.php` 必須同時確認 `APP_ENV=demo`、`DEMO_MODE=1`，且設定與實際連線的資料庫名稱都等於 `personal_accounting_demo`，否則拒絕執行。
+- Demo 模式不呼叫 Gemini，並停用未登入 Quick Entry、Shortcut API 與資料庫診斷端點。
+- Web port 預設只綁定 `127.0.0.1`。
+- MariaDB 沒有對外 host port，只能由 Compose network 內的 app container 連線。
+- Apache 與 PHP 執行紀錄使用專案專屬 Docker named volumes，不寫回原始碼目錄。
+- `.env` 只應放在專案根目錄，且已由 Git 忽略；Apache 只提供 `app/public`。
+- Demo 截圖、fixture 與展示環境只能使用合成資料。
 
-Desktop dashboard:
+`quick_entry.php` 與 `quick_entry_api.php` 原本是為可信任的私人網路設計，不是已驗證的公開 webhook。若要把應用程式部署到網際網路，必須另外加入授權層、HTTPS、rate limiting、CSRF 審查與濫用防護。
 
-![Synthetic desktop dashboard](docs/screenshots/dashboard-demo.png)
+`db-test.php` 會寫入診斷紀錄；maintenance 與 production import scripts 也可能修改資料。未完成備份、目標確認與明確審查前，不應對真實資料庫執行。
 
-Mobile dashboard:
+## 一般本機開發環境
 
-![Synthetic mobile dashboard](docs/screenshots/dashboard-mobile-demo.png)
+如果不是啟動公開 Demo，請先複製一般環境範例，並更換所有密碼 placeholder：
 
-## Local checks
+```bash
+cp .env.example .env
+chmod 600 .env
+docker compose up -d --build
+docker compose exec app php /var/www/html/scripts/migrate.php
+```
 
-Run PHP syntax checks:
+除非確定要永久刪除本機資料庫 volume，否則不要執行 `docker compose down -v`。
+
+## 本機檢查
+
+PHP 語法檢查：
 
 ```bash
 find app -name '*.php' -print0 | xargs -0 -n1 php -l
 ```
 
-Run focused tests that do not require a live production database:
+不需要正式資料庫的 focused tests：
 
 ```bash
 for test_file in app/tests/*Test.php; do php "$test_file"; done
 ```
 
-Validate the exact public allowlist and scan the current tree for high-signal credentials, internal paths, and forbidden real-world Demo labels:
+檢查公開檔案 allowlist、敏感資訊、內部路徑與禁止出現的真實世界 Demo 標籤：
 
 ```bash
 php app/scripts/public_release_check.php
 ```
 
-After creating at least one local commit, scan every local Git blob—including unreachable objects—and every reachable historical path:
+建立至少一筆本機 commit 後，掃描所有本機 Git blobs、unreachable objects 與歷史路徑：
 
 ```bash
 php app/scripts/public_git_history_check.php
 ```
 
-The bundled GitHub Actions workflow uses read-only repository permissions, does not use secrets, checks out complete public history, does not start MariaDB or create Compose volumes, and runs the same release boundary, local Git-object scan, PHP lint, and focused-test checks in the project image.
+GitHub Actions 使用唯讀 repository 權限、不使用 secrets、會 checkout 完整公開歷史，並執行 Compose 設定檢查、公開邊界掃描、完整 Git 歷史掃描、PHP lint 與 focused tests。
 
-Scripts that exercise MariaDB, Gemini, imports, or write paths have additional environment and database gates. Review each script before running it.
+## 公開版本狀態
 
-## Project status
+這個公開展示版本刻意排除私有 repository 歷史、基礎設施路徑、內部操作報告、真實資料與正式憑證。公開 Git 歷史從審核完成的 allowlist 重新建立。
 
-This public showcase intentionally omits the private repository history, infrastructure paths, operational reports, real data, and production credentials. Its Git history starts from the reviewed public allowlist. The original application icon source and generation basis are documented in `ASSET_PROVENANCE.md`. See `PUBLIC_ALLOWLIST.txt` for the exact repository contents and `PUBLIC_RELEASE_SCOPE.md` for publication status and operating boundaries.
+- 精確公開檔案清單：`PUBLIC_ALLOWLIST.txt`
+- 發布狀態與操作邊界：`PUBLIC_RELEASE_SCOPE.md`
+- 圖示來源與製作依據：`ASSET_PROVENANCE.md`
+- 安全通報方式：`SECURITY.md`
+- 完整英文說明：`README.en.md`
 
-## License
+## 技術架構
 
-This project is released under the MIT License. See `LICENSE`.
+- PHP 8.2 + Apache
+- MariaDB 11
+- Docker Compose
+- 原生 JavaScript 與 CSS
+- SQLite-focused tests
+- GitHub Actions
+
+## 授權
+
+本專案採用 MIT License，詳見 `LICENSE`。
