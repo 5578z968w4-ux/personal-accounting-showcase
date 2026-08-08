@@ -19,11 +19,13 @@ The private source repository, its `.git` directory, internal changelog, governa
 - Current-tree and all-local-blob Git-history checks, including unreachable objects, are bundled as local and CI release gates.
 - The bundled desktop and mobile screenshots were re-reviewed against the current isolated Demo after the visual changes; they match the current UI and contain synthetic data only.
 
-## Publication blockers
+## Publication status
 
-- Review and enable the bundled read-only CI workflow after repository creation; it has not run on GitHub.
-- Enable GitHub secret scanning, push protection, branch rules, and private vulnerability reporting before announcing the project.
-- Obtain explicit approval before creating a GitHub repository, pushing, or changing visibility.
+- The reviewed candidate is published at `https://github.com/5578z968w4-ux/personal-accounting-showcase` with its clean public-only history.
+- The bundled `Public candidate checks` workflow completed successfully on GitHub for commit `7c42c9e`.
+- GitHub Secret Protection, push protection, and private vulnerability reporting are enabled.
+- The active `Protect main` ruleset applies to the default branch, blocks deletion and force-push, requires pull requests, and requires the `verify` GitHub Actions check.
+- NAS synchronization, production deployment, and production runtime acceptance remain outside this public release.
 
 ## Excluded source categories
 
