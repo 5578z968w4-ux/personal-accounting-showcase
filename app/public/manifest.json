@@ -1,0 +1,23 @@
+{
+  "name": "Personal Accounting 快速記帳",
+  "short_name": "快速記帳",
+  "description": "使用自然語言直接記帳，AI 解析與驗證通過後寫入資料。",
+  "lang": "zh-Hant",
+  "start_url": "/quick_entry.php",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#1e3a8a",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

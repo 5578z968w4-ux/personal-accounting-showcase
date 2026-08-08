@@ -1,0 +1,56 @@
+name: Public candidate checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Validate Compose configuration
+        run: docker compose --env-file .env.demo.example -p personal_accounting_ci_public config --quiet
+
+      - name: Build verification image
+        run: docker build --tag personal-accounting-ci:local --file docker/php/Dockerfile .
+
+      - name: Check public release boundary
+        run: >-
+          docker run --rm
+          --volume "$PWD:/workspace:ro" --workdir /workspace
+          personal-accounting-ci:local
+          php app/scripts/public_release_check.php
+
+      - name: Check complete public Git history
+        run: >-
+          docker run --rm
+          --volume "$PWD:/workspace:ro" --workdir /workspace
+          personal-accounting-ci:local
+          php app/scripts/public_git_history_check.php
+
+      - name: Lint PHP
+        run: >-
+          docker run --rm
+          --volume "$PWD/app:/var/www/html:ro" --workdir /var/www/html
+          personal-accounting-ci:local sh -lc
+          'set -eu; find . -name "*.php" -print0 | sort -z | xargs -0 -n1 php -l'
+
+      - name: Run focused tests
+        run: >-
+          docker run --rm
+          --env APP_ENV=testing --env DEMO_MODE=0
+          --volume "$PWD/app:/var/www/html:ro" --workdir /var/www/html
+          personal-accounting-ci:local sh -lc
+          'set -eu; for test_file in tests/*Test.php; do php "$test_file"; done'
