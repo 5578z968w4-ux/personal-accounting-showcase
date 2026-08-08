@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added direct GitHub Pages links to the Chinese and English READMEs so visitors can open the browser-only synthetic interactive showcase without cloning the repository.
 - Added a local-only, browser-only Traditional Chinese interactive showcase under `showcase/`. It uses fixed synthetic records, supports dashboard filters plus in-memory add, edit, delete, work-log, and setting interactions, and has no PHP, database, authentication, network request, external API, or persistence dependency.
 - Added a Traditional Chinese showcase README and preserved the complete English documentation in `README.en.md`.
 - Updated the README from pre-publication candidate wording to the published showcase status.

@@ -6,6 +6,14 @@ A mobile-friendly personal accounting application built with PHP 8.2, MariaDB 11
 
 > Public showcase repository: this repository contains only its clean public-only history and no private source history, real environment file, database backup, import file, or runtime log. See `PUBLIC_RELEASE_SCOPE.md` for the completed publication status and operating boundaries.
 
+## Online interactive showcase
+
+Try the browser-only static showcase with synthetic data—no download or installation required:
+
+[Open the online interactive showcase](https://5578z968w4-ux.github.io/personal-accounting-showcase/showcase/)
+
+Add, edit, delete, and setting interactions exist only in the current browser tab. The page does not connect to PHP, MariaDB, NAS, external APIs, or persistent storage.
+
 ## Features
 
 - Expense and income management with configurable payment methods and accounts

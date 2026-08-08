@@ -6,6 +6,14 @@
 
 > 這是經過隱私審查的公開展示版本。Repository 僅包含重新建立的公開 Git 歷史，不包含私有原始歷史、真實環境檔、資料庫備份、匯入檔、執行紀錄或正式憑證。完整發布狀態與操作邊界請參閱 `PUBLIC_RELEASE_SCOPE.md`。
 
+## 線上互動展示
+
+不需要下載或安裝，可直接在瀏覽器操作合成資料的靜態展示：
+
+[立即體驗線上互動展示](https://5578z968w4-ux.github.io/personal-accounting-showcase/showcase/)
+
+這是純前端靜態展示；新增、編輯、刪除和設定互動只存在於目前的瀏覽器分頁，不會連線 PHP、MariaDB、NAS 或外部 API，也不會儲存資料。
+
 ## 這個展示可以真的操作嗎？
 
 可以。這個 repository 不只是展示圖片，也包含可執行的完整應用程式、Docker 環境、資料庫 migration、合成 Demo 資料與自動化測試。
