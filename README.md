@@ -2,7 +2,7 @@
 
 A mobile-friendly personal accounting application built with PHP 8.2, MariaDB 11, Apache, and Docker Compose. It covers expenses, income, salary estimates, overtime, leave, analytics, PWA quick entry, and optional Gemini-assisted parsing.
 
-> Public-release candidate: this directory contains only its clean public-candidate history and no private source history, real environment file, database backup, import file, or runtime log. Complete the remaining release gates in `PUBLIC_RELEASE_SCOPE.md` before publication.
+> Public showcase repository: this repository contains only its clean public-only history and no private source history, real environment file, database backup, import file, or runtime log. See `PUBLIC_RELEASE_SCOPE.md` for the completed publication status and operating boundaries.
 
 ## Features
 
@@ -125,7 +125,7 @@ Scripts that exercise MariaDB, Gemini, imports, or write paths have additional e
 
 ## Project status
 
-This candidate intentionally omits the private repository history, infrastructure paths, operational reports, real data, and production credentials. Its local Git repository starts from the reviewed public allowlist. The original application icon source and generation basis are documented in `ASSET_PROVENANCE.md`. See `PUBLIC_ALLOWLIST.txt` for the exact candidate contents and `PUBLIC_RELEASE_SCOPE.md` for remaining publication blockers.
+This public showcase intentionally omits the private repository history, infrastructure paths, operational reports, real data, and production credentials. Its Git history starts from the reviewed public allowlist. The original application icon source and generation basis are documented in `ASSET_PROVENANCE.md`. See `PUBLIC_ALLOWLIST.txt` for the exact repository contents and `PUBLIC_RELEASE_SCOPE.md` for publication status and operating boundaries.
 
 ## License
 

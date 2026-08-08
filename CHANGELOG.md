@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Updated the README from pre-publication candidate wording to the published showcase status.
 - Published the privacy-reviewed candidate to GitHub and enabled Secret Protection, push protection, private vulnerability reporting, and an active CI-gated `main` ruleset.
 - Made the complete-history scanner trust only its resolved project root so read-only CI mounts pass Git's ownership safety check.
 - Added `git` to the verification image so the complete-history release gate runs reliably in CI.
