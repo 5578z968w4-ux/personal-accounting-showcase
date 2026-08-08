@@ -12,6 +12,9 @@ PUBLIC_RELEASE_SCOPE.md
 README.en.md
 README.md
 SECURITY.md
+showcase/app.js
+showcase/index.html
+showcase/styles.css
 app/public/accounts.php
 app/public/ai_entry.php
 app/public/ai_parse_logs.php

@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="個人記帳與薪資管理系統的純瀏覽器互動展示，僅使用合成資料。">
+  <title>儀表板｜個人記帳互動展示</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="demo-mode-banner" role="status">
+    <div class="demo-mode-banner-inner">
+      <span class="demo-status"><span aria-hidden="true"></span>本機互動展示</span>
+      <span>合成資料 · 純前端互動 · 不會傳出資料</span>
+      <button class="demo-reset" id="reset-demo" type="button">重設展示資料</button>
+    </div>
+  </div>
+
+  <main class="page" id="總覽">
+    <header class="page-header">
+      <div>
+        <h1 id="page-title">儀表板</h1>
+        <p id="page-subtitle">日常支出、收支摘要與工作管理入口。</p>
+      </div>
+      <nav class="nav" id="main-nav" aria-label="主要功能"></nav>
+    </header>
+
+    <section id="view-root" tabindex="-1" aria-live="polite">
+      <div class="loading-state">正在載入互動展示…</div>
+    </section>
+  </main>
+
+  <nav class="mobile-bottom-nav" aria-label="手機導覽">
+    <button class="is-active" type="button" data-nav="dashboard" data-nav-link>首頁</button>
+    <button type="button" data-nav="ledger" data-nav-link>收支</button>
+    <button type="button" data-nav="work" data-nav-link>工作</button>
+    <button type="button" data-nav="settings" data-nav-link>設定</button>
+  </nav>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <dialog class="dialog" id="record-dialog" aria-labelledby="record-dialog-title">
+    <form class="dialog-card" id="record-form">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">合成展示操作</p>
+          <h2 id="record-dialog-title">新增收支紀錄</h2>
+        </div>
+        <button class="icon-button" type="button" data-close-dialog="record-dialog" aria-label="關閉新增收支紀錄視窗">關閉</button>
+      </div>
+      <div class="form-grid">
+        <label>類型
+          <select name="type" id="record-type" required>
+            <option value="expense">支出</option>
+            <option value="income">收入</option>
+          </select>
+        </label>
+        <label>日期
+          <input name="date" id="record-date" type="date" required>
+        </label>
+        <label class="span-2">項目名稱
+          <input name="item" id="record-item" type="text" maxlength="40" autocomplete="off" required>
+        </label>
+        <label>分類
+          <input name="category" id="record-category" type="text" maxlength="24" autocomplete="off" required>
+        </label>
+        <label>金額
+          <input name="amount" id="record-amount" type="number" min="1" step="1" inputmode="decimal" required>
+        </label>
+        <label>付款方式
+          <select name="payment" id="record-payment" required></select>
+        </label>
+        <label>帳戶
+          <select name="account" id="record-account" required></select>
+        </label>
+        <label class="span-2">記帳對象
+          <select name="owner" id="record-owner" required></select>
+        </label>
+      </div>
+      <p class="form-hint">此操作不會送出資料、建立帳號或儲存到資料庫。</p>
+      <div class="dialog-actions">
+        <button class="button button-quiet" type="button" data-close-dialog="record-dialog">取消</button>
+        <button class="button button-primary" type="submit">儲存展示紀錄</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="dialog" id="work-dialog" aria-labelledby="work-dialog-title">
+    <form class="dialog-card" id="work-form">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">合成展示操作</p>
+          <h2 id="work-dialog-title">新增工作紀錄</h2>
+        </div>
+        <button class="icon-button" type="button" data-close-dialog="work-dialog" aria-label="關閉新增工作紀錄視窗">關閉</button>
+      </div>
+      <div class="form-grid">
+        <label>類型
+          <select name="type" id="work-type" required>
+            <option value="overtime">加班</option>
+            <option value="leave">請假</option>
+          </select>
+        </label>
+        <label>日期
+          <input name="date" id="work-date" type="date" required>
+        </label>
+        <label id="work-quantity-label">加班時數
+          <input name="quantity" id="work-quantity" type="number" min="0.5" step="0.5" inputmode="decimal" required>
+        </label>
+        <label>備註
+          <input name="note" id="work-note" type="text" maxlength="40" autocomplete="off" required>
+        </label>
+      </div>
+      <p class="form-hint">此操作只更新目前頁面的合成資料，不會連線任何外部服務。</p>
+      <div class="dialog-actions">
+        <button class="button button-quiet" type="button" data-close-dialog="work-dialog">取消</button>
+        <button class="button button-primary" type="submit">儲存工作紀錄</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="dialog" id="setting-dialog" aria-labelledby="setting-dialog-title">
+    <form class="dialog-card" id="setting-form">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">合成展示操作</p>
+          <h2 id="setting-dialog-title">新增展示設定</h2>
+        </div>
+        <button class="icon-button" type="button" data-close-dialog="setting-dialog" aria-label="關閉新增展示設定視窗">關閉</button>
+      </div>
+      <div class="form-grid">
+        <label>設定類別
+          <select name="kind" id="setting-kind" required>
+            <option value="payment">付款方式</option>
+            <option value="account">帳戶</option>
+          </select>
+        </label>
+        <label>名稱
+          <input name="name" id="setting-name" type="text" maxlength="30" autocomplete="off" required>
+        </label>
+        <label class="span-2">結算說明
+          <input name="detail" id="setting-detail" type="text" maxlength="30" autocomplete="off" value="每月 1 日至月底">
+        </label>
+      </div>
+      <p class="form-hint">新增項目只供此頁面體驗；重新整理後不會保留。</p>
+      <div class="dialog-actions">
+        <button class="button button-quiet" type="button" data-close-dialog="setting-dialog">取消</button>
+        <button class="button button-primary" type="submit">新增展示設定</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="dialog dialog-small" id="confirm-dialog" aria-labelledby="confirm-dialog-title">
+    <form class="dialog-card" method="dialog" id="confirm-form">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">展示操作確認</p>
+          <h2 id="confirm-dialog-title">移除這筆合成資料？</h2>
+        </div>
+      </div>
+      <p id="confirm-message">此操作只會影響目前瀏覽器的展示狀態。</p>
+      <div class="dialog-actions">
+        <button class="button button-quiet" value="cancel">取消</button>
+        <button class="button button-danger" value="confirm">確認移除</button>
+      </div>
+    </form>
+  </dialog>
+
+  <noscript>
+    <p class="noscript">此互動展示需要啟用 JavaScript；不會連線伺服器或使用資料庫。</p>
+  </noscript>
+</body>
+</html>

@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added a local-only, browser-only Traditional Chinese interactive showcase under `showcase/`. It uses fixed synthetic records, supports dashboard filters plus in-memory add, edit, delete, work-log, and setting interactions, and has no PHP, database, authentication, network request, external API, or persistence dependency.
 - Added a Traditional Chinese showcase README and preserved the complete English documentation in `README.en.md`.
 - Updated the README from pre-publication candidate wording to the published showcase status.
 - Published the privacy-reviewed candidate to GitHub and enabled Secret Protection, push protection, private vulnerability reporting, and an active CI-gated `main` ruleset.
