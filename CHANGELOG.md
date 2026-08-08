@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Made the complete-history scanner trust only its resolved project root so read-only CI mounts pass Git's ownership safety check.
 - Added `git` to the verification image so the complete-history release gate runs reliably in CI.
 - Re-reviewed the bundled desktop and mobile screenshots against the current isolated Demo and confirmed that payment methods, accounts, and entry owners remain synthetic throughout the browser journey.
 - Added a reproducible full-history scanner for all local Git blobs, including unreachable objects, and configured CI to check out and inspect complete public history.

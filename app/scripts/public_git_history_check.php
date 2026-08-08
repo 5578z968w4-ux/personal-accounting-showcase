@@ -15,7 +15,13 @@ $failures = [];
  */
 function run_git(string $projectRoot, array $arguments): string
 {
-    $command = array_merge(['git', '-C', $projectRoot], $arguments);
+    $command = array_merge([
+        'git',
+        '-c',
+        'safe.directory=' . $projectRoot,
+        '-C',
+        $projectRoot,
+    ], $arguments);
     $process = proc_open(
         $command,
         [
