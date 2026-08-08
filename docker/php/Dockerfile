@@ -1,7 +1,7 @@
 FROM php:8.2-apache
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends libsqlite3-dev \
+    && apt-get install -y --no-install-recommends git libsqlite3-dev \
     && docker-php-ext-install pdo_mysql pdo_sqlite \
     && php -m | grep -qx curl \
     && rm -rf /var/lib/apt/lists/*

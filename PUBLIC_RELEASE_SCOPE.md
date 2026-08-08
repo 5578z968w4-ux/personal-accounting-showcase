@@ -17,10 +17,10 @@ The private source repository, its `.git` directory, internal changelog, governa
 - The application icon set was created specifically for this candidate from original vector geometry; its source and generation basis are recorded in `ASSET_PROVENANCE.md`.
 - The candidate is licensed under the MIT License; the canonical text is included in `LICENSE`.
 - Current-tree and all-local-blob Git-history checks, including unreachable objects, are bundled as local and CI release gates.
+- The bundled desktop and mobile screenshots were re-reviewed against the current isolated Demo after the visual changes; they match the current UI and contain synthetic data only.
 
 ## Publication blockers
 
-- Re-review the bundled synthetic screenshots after visual changes; never replace them with production screenshots.
 - Review and enable the bundled read-only CI workflow after repository creation; it has not run on GitHub.
 - Enable GitHub secret scanning, push protection, branch rules, and private vulnerability reporting before announcing the project.
 - Obtain explicit approval before creating a GitHub repository, pushing, or changing visibility.

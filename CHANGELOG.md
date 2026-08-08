@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added `git` to the verification image so the complete-history release gate runs reliably in CI.
+- Re-reviewed the bundled desktop and mobile screenshots against the current isolated Demo and confirmed that payment methods, accounts, and entry owners remain synthetic throughout the browser journey.
 - Added a reproducible full-history scanner for all local Git blobs, including unreachable objects, and configured CI to check out and inspect complete public history.
 - Changed the public application icon and PWA theme to a professional deep-blue palette with a warm-gold accent.
 - Adopted the MIT License for the public-release candidate.
